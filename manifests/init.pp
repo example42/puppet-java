@@ -29,8 +29,8 @@ class java (
 
   if $java::bool_jdk == true {
     package { 'java-jdk':
-      ensure => $java::manage_package_jdk,
-      name   => $java::package,
+      ensure => $java::manage_package,
+      name   => $java::package_jdk,
     }
   }
 
