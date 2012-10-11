@@ -10,6 +10,7 @@ class java (
 
   $bool_absent=any2bool($absent)
   $bool_jdk=any2bool($jdk)
+  $bool_debug=any2bool($debug)
 
   ### Definition of some variables used in the module
   $manage_package = $java::bool_absent ? {
