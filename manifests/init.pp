@@ -1,11 +1,13 @@
 class java (
   $jdk                 = params_lookup( 'jdk' ),
+  $version             = params_lookup( 'version' ),
   $my_class            = params_lookup( 'my_class' ),
   $absent              = params_lookup( 'absent' ),
   $puppi               = params_lookup( 'puppi' , 'global' ),
   $puppi_helper        = params_lookup( 'puppi_helper' , 'global' ),
   $debug               = params_lookup( 'debug' , 'global' ),
   $package             = params_lookup( 'package' ),
+  $package_jdk         = params_lookup( 'package_jdk' ),
   ) inherits java::params {
 
   $bool_absent=any2bool($absent)
@@ -22,16 +24,32 @@ class java (
     default => 'present',
   }
 
+  $real_package = $package ? {
+    ''  => $::operatingsystem ? {
+      /(?i:Ubuntu|Debian|Mint)/ => "openjdk-${version}-jre",
+      default                   => "java-1.${version}.0-openjdk",
+    },
+    default => $package,
+  }
+
+  $real_package_jdk = $package_jdk ? {
+    ''  => $::operatingsystem ? {
+      /(?i:Ubuntu|Debian|Mint)/ => "openjdk-${version}-jdk",
+      default                   => "java-1.${version}.0-openjdk-devel",
+    },
+    default => $package_jdk,
+  }
+
   ### Managed resources
   package { 'java':
     ensure => $java::manage_package,
-    name   => $java::package,
+    name   => $java::real_package,
   }
 
   if $java::bool_jdk == true {
     package { 'java-jdk':
       ensure => $java::manage_package,
-      name   => $java::package_jdk,
+      name   => $java::real_package_jdk,
     }
   }
 
