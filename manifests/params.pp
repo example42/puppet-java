@@ -23,11 +23,11 @@ class java::params {
     default                   => 'java-1.6.0-sun',
   }
   $jre_openjdk6 = $::operatingsystem ? {
-    /(?i:Ubuntu|Debian|Mint)/ => 'openjdk-6-jre',
+    /(?i:Ubuntu|Debian|Mint)/ => 'openjdk-6-jre-headless',
     default                   => 'java-1.6.0-openjdk',
   }
   $jre_openjdk7 = $::operatingsystem ? {
-    /(?i:Ubuntu|Debian|Mint)/ => 'openjdk-7-jre',
+    /(?i:Ubuntu|Debian|Mint)/ => 'openjdk-7-jre-headless',
     default                   => 'java-1.7.0-openjdk',
   }
 
