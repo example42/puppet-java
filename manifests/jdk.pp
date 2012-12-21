@@ -12,7 +12,7 @@ define java::jdk(
     default:        { fail("Unhandled JDK: ${name}") }
   }
 
-  $manage_package = $java::bool_absent ? {
+  $manage_package = $bool_absent ? {
     true  => 'absent',
     false => 'present',
   }

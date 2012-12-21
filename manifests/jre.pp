@@ -12,7 +12,7 @@ define java::jre(
     default:        { fail("Unhandled JRE: ${name}") }
   }
 
-  $manage_package = $java::bool_absent ? {
+  $manage_package = $bool_absent ? {
     true  => 'absent',
     false => 'present',
   }
