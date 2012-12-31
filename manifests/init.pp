@@ -27,6 +27,8 @@ class java (
   $real_package = $package ? {
     ''  => $::operatingsystem ? {
       /(?i:Ubuntu|Debian|Mint)/ => "openjdk-${version}-jre",
+      /(?i:SuSE)/               => "java-1_${version}_0-ibm",
+      /(?i:OpenSuSE)/           => "java-1_${version}_0-openjdk",
       default                   => "java-1.${version}.0-openjdk",
     },
     default => $package,
@@ -35,6 +37,8 @@ class java (
   $real_package_jdk = $package_jdk ? {
     ''  => $::operatingsystem ? {
       /(?i:Ubuntu|Debian|Mint)/ => "openjdk-${version}-jdk",
+      /(?i:SuSE)/               => "java-1_${version}_0-ibm",
+      /(?i:OpenSuSE)/           => "java-1_${version}_0-openjdk-devel",
       default                   => "java-1.${version}.0-openjdk-devel",
     },
     default => $package_jdk,
