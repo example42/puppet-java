@@ -7,7 +7,7 @@ class java (
   $puppi_helper        = params_lookup( 'puppi_helper' , 'global' ),
   $debug               = params_lookup( 'debug' , 'global' ),
   $package             = params_lookup( 'package' ),
-  $package_jdk         = params_lookup( 'package_jdk' ),
+  $package_jdk         = params_lookup( 'package_jdk' )
   ) inherits java::params {
 
   $bool_absent=any2bool($absent)
