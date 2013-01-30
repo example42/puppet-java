@@ -1,6 +1,10 @@
 name 'example42-java'
 version '2.0.0'
 
-author ''
-license ''
-dependency 'example42/puppi', '==2.0.8'
+author 'Alessandro Franceschi'
+license 'Apache2'
+project_page 'http://www.example42.com'
+source 'https://github.com/example42/puppet-java'
+summary 'Puppet module for java'
+description 'This module installs and manages java'
+dependency 'example42/puppi', '>=2.0.0'
