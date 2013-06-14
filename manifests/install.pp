@@ -12,9 +12,15 @@
 # [*headless*]
 #   Headless version (without X11 libraries). Default true.
 #
+# [*install*]
+#   Installation method ('package' or 'source'). Default 'package'.
+#
+# [*install_source*]
+#   Source URL (when install='source'). Not default.
+#
 # [*package*]
-#   Name of the package to install. If not default it's automatically
-#   defined for the operatingsystem
+#   Name of the package to install (when install='package'). If not default it's
+#   automatically defined for the operatingsystem
 #   Default: ''
 #
 # [*package_source*]
