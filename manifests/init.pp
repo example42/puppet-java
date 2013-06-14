@@ -2,6 +2,7 @@ class java (
   $jdk                 = params_lookup( 'jdk' ),
   $version             = params_lookup( 'version' ),
   $headless            = params_lookup( 'headless' ),
+  $java_home_base      = params_lookup( 'java_home_base' ),
   $my_class            = params_lookup( 'my_class' ),
   $absent              = params_lookup( 'absent' ),
   $puppi               = params_lookup( 'puppi' , 'global' ),
