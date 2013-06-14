@@ -15,6 +15,13 @@
 class java::params {
 
   $version = '6'
+  $headless = true
+  $java_home_base = $::operatingsystem ? {
+    /(?i:SLES|OpenSuSE)/      => '/usr/lib/java',
+    /(?i:Ubuntu|Debian|Mint)/ => '/usr/lib/jvm',
+    default                   => '/usr/lib/jvm',
+  }
+
 
   # Real package names are computed in java class
   $package = ''
