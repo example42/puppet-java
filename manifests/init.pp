@@ -1,6 +1,7 @@
 class java (
   $jdk                 = params_lookup( 'jdk' ),
   $version             = params_lookup( 'version' ),
+  $headless            = params_lookup( 'headless' ),
   $my_class            = params_lookup( 'my_class' ),
   $absent              = params_lookup( 'absent' ),
   $puppi               = params_lookup( 'puppi' , 'global' ),
@@ -10,6 +11,7 @@ class java (
   $package_jdk         = params_lookup( 'package_jdk' )
   ) inherits java::params {
 
+  $bool_headless=any2bool($headless)
   $bool_absent=any2bool($absent)
   $bool_jdk=any2bool($jdk)
   $bool_debug=any2bool($debug)
@@ -24,9 +26,13 @@ class java (
     default => 'present',
   }
 
+  $headless_suffix = $java::bool_headless ? {
+    true    => '-headless',
+    default => '',
+  }
   $real_package = $package ? {
     ''  => $::operatingsystem ? {
-      /(?i:Ubuntu|Debian|Mint)/ => "openjdk-${version}-jre",
+      /(?i:Ubuntu|Debian|Mint)/ => "openjdk-${version}-jre${headless_suffix}",
       /(?i:SLES)/               => "java-1_${version}_0-ibm",
       /(?i:OpenSuSE)/           => "java-1_${version}_0-openjdk",
       default                   => "java-1.${version}.0-openjdk",

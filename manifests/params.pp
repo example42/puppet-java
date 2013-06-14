@@ -15,6 +15,7 @@
 class java::params {
 
   $version = '6'
+  $headless = true
 
   # Real package names are computed in java class
   $package = ''

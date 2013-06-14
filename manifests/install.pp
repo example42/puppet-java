@@ -9,6 +9,9 @@
 # [*version*]
 #   Java version to install. Default 7.
 #
+# [*headless*]
+#   Headless version (without X11 libraries). Default true.
+#
 # [*package*]
 #   Name of the package to install. If not default it's automatically
 #   defined for the operatingsystem
@@ -33,6 +36,7 @@
 define java::install (
   $jdk                     = false,
   $version                 = '7',
+  $headless                = true,
   $package                 = '',
   $package_source          = undef,
   $package_responsefile    = undef,
@@ -40,15 +44,20 @@ define java::install (
   $absent                  = false
 ) {
 
+  $bool_headless=any2bool($headless)
   $bool_jdk=any2bool($jdk)
   $bool_absent=any2bool($absent)
 
 
+  $headless_suffix = $java::bool_headless ? {
+    true    => '-headless',
+    default => '',
+  }
   $real_package = $package ? {
     ''  => $bool_jdk ? { 
       false => $::operatingsystem ? {
         /(?i:RedHat|Centos|Fedora|Scientific|Amazon|Linux)/ => "java-1.${version}.0-openjdk",
-        /(?i:Ubuntu|Debian|Mint)/                           => "openjdk-${version}-jre",
+        /(?i:Ubuntu|Debian|Mint)/                           => "openjdk-${version}-jre${headless_suffix}",
         /(?i:SLES)/                                         => "java-1_${version}_0-ibm",
         /(?i:OpenSuSE)/                                     => "java-1_${version}_0-openjdk",
         /(?i:Solaris)/                                      => "runtime/java/jre-${version}",
