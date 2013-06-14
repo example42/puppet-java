@@ -111,6 +111,7 @@ define java::install (
         url                 => $install_source,
         destination_dir     => $java::java_home_base,
         work_dir            => $java::java_home_base,
+        preextract_command  => "chmod +x ${java::java_home_base}/${created_file}",
         extract_command     => "${java::java_home_base}/${created_file}",
         extracted_dir       => $created_dir,
       }
