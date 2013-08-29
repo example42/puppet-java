@@ -1,3 +1,5 @@
+# = Class java
+#
 class java (
   $jdk                 = params_lookup( 'jdk' ),
   $version             = params_lookup( 'version' ),
