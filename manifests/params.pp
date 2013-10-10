@@ -14,6 +14,7 @@
 #
 class java::params {
 
+  $jdk = false
   $version = '6'
   $headless = true
   $java_home_base = $::operatingsystem ? {
