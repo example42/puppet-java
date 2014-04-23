@@ -60,7 +60,7 @@ define java::install (
 
     package: {
 
-      $headless_suffix = $java::bool_headless ? {
+      $headless_suffix = $bool_headless ? {
         true    => '-headless',
         default => '',
       }
