@@ -81,9 +81,9 @@ define java::install (
             /(?i:OpenSuSE)/                                     => "java-1_${version}_0-openjdk-devel",
             /(?i:Solaris)/                                      => "developer/java/jdk-${version}",
             default                   => fail("OperatingSystem ${::operatingsystem} not supported"),
-          },
+          }
+        },
         default => $package,
-        }
       }
 
       $manage_package = $bool_absent ? {
