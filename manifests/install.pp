@@ -120,7 +120,7 @@ define java::install (
         ensure  => link ,
         path    => "${java::java_home_base}/${name}" ,
         target  => $created_dir,
-        require => Puppi::Netinstall ["netinstall_java_${name}"],
+        require => Puppi::Netinstall["netinstall_java_${name}"],
       }
 
     }
