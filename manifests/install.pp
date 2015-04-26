@@ -92,10 +92,10 @@ define java::install (
       }
 
       package { $real_package:
-        ensure          => $manage_package,
-        source          => $package_source,
-        responsefile    => $package_responsefile,
-        provider        => $package_provider,
+        ensure       => $manage_package,
+        source       => $package_source,
+        responsefile => $package_responsefile,
+        provider     => $package_provider,
       }
 
     }
@@ -108,12 +108,12 @@ define java::install (
       $created_dir = regsubst($created_file, '^(.*)\.bin$', '\1')
 
       puppi::netinstall { "netinstall_java_${name}":
-        url                 => $install_source,
-        destination_dir     => $java::java_home_base,
-        work_dir            => $java::java_home_base,
-        preextract_command  => "chmod +x ${java::java_home_base}/${created_file}",
-        extract_command     => "${java::java_home_base}/${created_file}",
-        extracted_dir       => $created_dir,
+        url                => $install_source,
+        destination_dir    => $java::java_home_base,
+        work_dir           => $java::java_home_base,
+        preextract_command => "chmod +x ${java::java_home_base}/${created_file}",
+        extract_command    => "${java::java_home_base}/${created_file}",
+        extracted_dir      => $created_dir,
       }
 
       file { "java_${name}_link":
