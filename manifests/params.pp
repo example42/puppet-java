@@ -15,7 +15,11 @@
 class java::params {
 
   $jdk = false
-  $version = '6'
+  if $::operatingsystem == 'Debian' and versioncmp($::operatingsystemrelease, '8.0') >= 0 {
+    $version = '7'
+  } else {
+    $version = '6'
+  }
   $headless = true
   $java_home_base = $::operatingsystem ? {
     /(?i:SLES|OpenSuSE)/      => '/usr/lib/java',
