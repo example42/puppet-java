@@ -65,21 +65,27 @@ define java::install (
         default => '',
       }
       $real_package = $package ? {
-        ''  => $bool_jdk ? {
-          false => $::operatingsystem ? {
+        ''                                                      => $bool_jdk ? {
+          false                                                 => $::operatingsystem ? {
             /(?i:RedHat|Centos|Fedora|Scientific|Amazon|Linux)/ => "java-1.${version}.0-openjdk",
             /(?i:Ubuntu|Debian|Mint)/                           => "openjdk-${version}-jre${headless_suffix}",
             /(?i:SLES)/                                         => "java-1_${version}_0-ibm",
             /(?i:OpenSuSE)/                                     => "java-1_${version}_0-openjdk",
-            /(?i:Solaris)/                                      => "runtime/java/jre-${version}",
+            /(?i:Solaris)/                                      => $::operatingsystemmajrelease ? {
+              '10'                                              => "CSWjre${version}",
+              '11'                                              => "runtime/java/jre-${version}",
+            },
             default                   => fail("OperatingSystem ${::operatingsystem} not supported"),
           },
-          true => $::operatingsystem ? {
+          true                                                  => $::operatingsystem ? {
             /(?i:RedHat|Centos|Fedora|Scientific|Amazon|Linux)/ => "java-1.${version}.0-openjdk-devel",
             /(?i:Ubuntu|Debian|Mint)/                           => "openjdk-${version}-jdk",
             /(?i:SLES)/                                         => "java-1_${version}_0-ibm",
             /(?i:OpenSuSE)/                                     => "java-1_${version}_0-openjdk-devel",
-            /(?i:Solaris)/                                      => "developer/java/jdk-${version}",
+            /(?i:Solaris)/                                      => $::operatingsystemmajrelease ? {
+              '10'                                              => "CSWjdk${version}",
+              '11'                                              => "developer/java/jdk-${version}",
+            },
             default                   => fail("OperatingSystem ${::operatingsystem} not supported"),
           }
         },

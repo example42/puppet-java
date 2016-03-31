@@ -34,20 +34,28 @@ class java (
     default => '',
   }
   $real_package = $package ? {
-    ''  => $::operatingsystem ? {
+    ''                          => $::operatingsystem ? {
       /(?i:Ubuntu|Debian|Mint)/ => "openjdk-${version}-jre${headless_suffix}",
       /(?i:SLES)/               => "java-1_${version}_0-ibm",
       /(?i:OpenSuSE)/           => "java-1_${version}_0-openjdk",
+      /(?i:Solaris)/            => $::operatingsystemmajrelease ? {
+        '10'                    => "CSWjre${version}",
+        '11'                    => "jre-${version}",
+      },
       default                   => "java-1.${version}.0-openjdk",
     },
     default => $package,
   }
 
   $real_package_jdk = $package_jdk ? {
-    ''  => $::operatingsystem ? {
+    ''                          => $::operatingsystem ? {
       /(?i:Ubuntu|Debian|Mint)/ => "openjdk-${version}-jdk",
       /(?i:SLES)/               => "java-1_${version}_0-ibm",
       /(?i:OpenSuSE)/           => "java-1_${version}_0-openjdk-devel",
+      /(?i:Solaris)/            => $::operatingsystemmajrelease ? {
+        '10'                    => "CSWjdk${version}",
+        '11'                    => "jdk${version}",
+      },
       default                   => "java-1.${version}.0-openjdk-devel",
     },
     default => $package_jdk,

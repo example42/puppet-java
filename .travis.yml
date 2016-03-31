@@ -28,7 +28,6 @@ matrix:
     - rvm: 2.1.4
       env: PUPPET_VERSION="~> 3.1.0"
 
-gemfile: .gemfile
 sudo: false
 notifications:
   email:
