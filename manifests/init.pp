@@ -41,6 +41,7 @@ class java (
       /(?i:Solaris)/            => $::operatingsystemmajrelease ? {
         '10'                    => "CSWjre${version}",
         '11'                    => "jre-${version}",
+        '5'                     => "jre-${version}",
       },
       default                   => "java-1.${version}.0-openjdk",
     },
@@ -55,6 +56,7 @@ class java (
       /(?i:Solaris)/            => $::operatingsystemmajrelease ? {
         '10'                    => "CSWjdk${version}",
         '11'                    => "jdk${version}",
+        '5'                     => "jdk${version}",
       },
       default                   => "java-1.${version}.0-openjdk-devel",
     },
