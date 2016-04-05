@@ -27,6 +27,7 @@ class java::params {
     /(?i:Solaris)/            => $::operatingsystemmajrelease ? {
       '10'                    => '/opt/csw/java',
       '11'                    => '/usr/java',
+      '5'                     => '/usr/java',
     },
     default                   => '/usr/lib/jvm',
   }
