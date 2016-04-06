@@ -74,6 +74,7 @@ define java::install (
             /(?i:Solaris)/                                      => $::operatingsystemmajrelease ? {
               '10'                                              => "CSWjre${version}",
               '11'                                              => "runtime/java/jre-${version}",
+              '5'                                               => "runtime/java/jre-${version}",
             },
             default                   => fail("OperatingSystem ${::operatingsystem} not supported"),
           },
@@ -85,6 +86,7 @@ define java::install (
             /(?i:Solaris)/                                      => $::operatingsystemmajrelease ? {
               '10'                                              => "CSWjdk${version}",
               '11'                                              => "developer/java/jdk-${version}",
+              '5'                                               => "developer/java/jdk-${version}",
             },
             default                   => fail("OperatingSystem ${::operatingsystem} not supported"),
           }
