@@ -24,6 +24,11 @@ class java::params {
   $java_home_base = $::operatingsystem ? {
     /(?i:SLES|OpenSuSE)/      => '/usr/lib/java',
     /(?i:Ubuntu|Debian|Mint)/ => '/usr/lib/jvm',
+    /(?i:Solaris)/            => $::operatingsystemmajrelease ? {
+      '10'                    => '/opt/csw/java',
+      '11'                    => '/usr/java',
+      '5'                     => '/usr/java',
+    },
     default                   => '/usr/lib/jvm',
   }
 
