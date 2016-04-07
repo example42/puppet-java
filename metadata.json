@@ -62,18 +62,6 @@
       "version_requirement": ">= 2.0.0"
     },
     {
-      "name": "example42/monitor",
-      "version_requirement": ">= 2.0.0"
-    },
-    {
-      "name": "example42/iptables",
-      "version_requirement": ">= 2.0.0"
-    },
-    {
-      "name": "example42/firewall",
-      "version_requirement": ">= 2.0.0"
-    },
-    {
       "name": "puppetlabs/concat",
       "version_requirement": ">= 1.0.0"
     }
