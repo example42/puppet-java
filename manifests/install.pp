@@ -73,8 +73,8 @@ define java::install (
             /(?i:OpenSuSE)/                                     => "java-1_${version}_0-openjdk",
             /(?i:Solaris)/                                      => $::operatingsystemmajrelease ? {
               '10'                                              => "CSWjre${version}",
-              '11'                                              => "runtime/java/jre-${version}",
-              '5'                                               => "runtime/java/jre-${version}",
+              '11'                                              => "jre-${version}",
+              '5'                                               => undef,
             },
             default                   => fail("OperatingSystem ${::operatingsystem} not supported"),
           },
@@ -85,8 +85,8 @@ define java::install (
             /(?i:OpenSuSE)/                                     => "java-1_${version}_0-openjdk-devel",
             /(?i:Solaris)/                                      => $::operatingsystemmajrelease ? {
               '10'                                              => "CSWjdk${version}",
-              '11'                                              => "developer/java/jdk-${version}",
-              '5'                                               => "developer/java/jdk-${version}",
+              '11'                                              => "jdk-${version}",
+              '5'                                               => "jdk",
             },
             default                   => fail("OperatingSystem ${::operatingsystem} not supported"),
           }
