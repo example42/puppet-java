@@ -58,7 +58,7 @@ define java::install (
 
   case $install {
 
-    package: {
+    'package': {
 
       $headless_suffix = $bool_headless ? {
         true    => '-headless',
@@ -86,7 +86,7 @@ define java::install (
             /(?i:Solaris)/                                      => $::operatingsystemmajrelease ? {
               '10'                                              => "CSWjdk${version}",
               '11'                                              => "jdk-${version}",
-              '5'                                               => "jdk",
+              '5'                                               => 'jdk',
             },
             default                   => fail("OperatingSystem ${::operatingsystem} not supported"),
           }
@@ -108,7 +108,7 @@ define java::install (
 
     }
 
-    source: {
+    'source': {
       if (!$install_source) {
         fail('Required arguement: install_source')
       }
