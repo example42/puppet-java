@@ -21,7 +21,7 @@
 # [*package*]
 #   Name of the package to install (when install='package'). If not default it's
 #   automatically defined for the operatingsystem
-#   Default: ''
+#   Default: undef
 #
 # [*package_source*]
 #   Source from where to retrieve the defined package. Use a url.
@@ -44,8 +44,8 @@ define java::install (
   $version                 = '7',
   $headless                = true,
   $install                 = 'package',
-  $install_source          = '',
-  $package                 = '',
+  $install_source          = undef,
+  $package                 = undef,
   $package_source          = undef,
   $package_responsefile    = undef,
   $package_provider        = undef,
@@ -59,13 +59,12 @@ define java::install (
   case $install {
 
     'package': {
-
       $headless_suffix = $bool_headless ? {
         true    => '-headless',
         default => '',
       }
       $real_package = $package ? {
-        ''                                                      => $bool_jdk ? {
+        undef       => $bool_jdk ? {
           false                                                 => $::operatingsystem ? {
             /(?i:RedHat|Centos|Fedora|Scientific|Amazon|Linux)/ => "java-1.${version}.0-openjdk",
             /(?i:Ubuntu|Debian|Mint)/                           => "openjdk-${version}-jre${headless_suffix}",
@@ -78,7 +77,7 @@ define java::install (
             },
             default                   => fail("OperatingSystem ${::operatingsystem} not supported"),
           },
-          true                                                  => $::operatingsystem ? {
+          true      => $::operatingsystem ? {
             /(?i:RedHat|Centos|Fedora|Scientific|Amazon|Linux)/ => "java-1.${version}.0-openjdk-devel",
             /(?i:Ubuntu|Debian|Mint)/                           => "openjdk-${version}-jdk",
             /(?i:SLES)/                                         => "java-1_${version}_0-ibm",
@@ -88,7 +87,7 @@ define java::install (
               '11'                                              => "jdk-${version}",
               '5'                                               => 'jdk',
             },
-            default                   => fail("OperatingSystem ${::operatingsystem} not supported"),
+            default => fail("OperatingSystem ${::operatingsystem} not supported"),
           }
         },
         default => $package,
@@ -105,9 +104,7 @@ define java::install (
         responsefile => $package_responsefile,
         provider     => $package_provider,
       }
-
     }
-
     'source': {
       if (!$install_source) {
         fail('Required arguement: install_source')
@@ -130,10 +127,9 @@ define java::install (
         target  => $created_dir,
         require => Puppi::Netinstall["netinstall_java_${name}"],
       }
-
     }
-
-    default: { }
-
+    default: {
+      fail("java::install::${name}::install is <${install}> and must be 'package' or 'source'.")
+    }
   }
 }

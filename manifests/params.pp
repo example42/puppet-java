@@ -34,11 +34,11 @@ class java::params {
 
 
   # Real package names are computed in java class
-  $package = ''
-  $package_jdk = ''
+  $package = undef
+  $package_jdk = undef
 
   # General Settings
-  $my_class = ''
+  $my_class = undef
   $absent = false
   $puppi = false
   $puppi_helper = 'standard'
