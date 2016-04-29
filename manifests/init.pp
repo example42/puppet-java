@@ -19,71 +19,73 @@ class java (
   $bool_jdk=any2bool($jdk)
   $bool_debug=any2bool($debug)
 
+  if $package != undef { validate_string($package) }
+  if $package_jdk != undef { validate_string($package_jdk) }
+
   ### Definition of some variables used in the module
-  $manage_package = $java::bool_absent ? {
+  $manage_package = $bool_absent ? {
     true  => 'absent',
     false => 'present',
   }
-  $manage_file = $java::bool_absent ? {
+  $manage_file = $bool_absent ? {
     true    => 'absent',
     default => 'present',
   }
 
   validate_absolute_path($java_home_base)
-
   validate_string($version)
 
-  $headless_suffix = $java::bool_headless ? {
+  $headless_suffix = $bool_headless ? {
     true    => '-headless',
     default => '',
   }
   $real_package = $package ? {
-    ''                          => $::operatingsystem ? {
+    '' => $::operatingsystem ? {
       /(?i:Ubuntu|Debian|Mint)/ => "openjdk-${version}-jre${headless_suffix}",
       /(?i:SLES)/               => "java-1_${version}_0-ibm",
       /(?i:OpenSuSE)/           => "java-1_${version}_0-openjdk",
-      /(?i:Solaris)/            => $::operatingsystemmajrelease ? {
-        '10'                    => "CSWjre${version}",
-        '11'                    => "jre-${version}",
-        '5'                     => "jre-${version}",
+      /(?i:Solaris)/ => $::operatingsystemmajrelease ? {
+        '10' => "CSWjre${version}",
+        '11' => "jre-${version}",
+        '5'  => "jre-${version}",
       },
-      default                   => "java-1.${version}.0-openjdk",
+      default => "java-1.${version}.0-openjdk",
     },
     default => $package,
   }
 
   $real_package_jdk = $package_jdk ? {
-    ''                          => $::operatingsystem ? {
+    '' => $::operatingsystem ? {
       /(?i:Ubuntu|Debian|Mint)/ => "openjdk-${version}-jdk",
       /(?i:SLES)/               => "java-1_${version}_0-ibm",
       /(?i:OpenSuSE)/           => "java-1_${version}_0-openjdk-devel",
-      /(?i:Solaris)/            => $::operatingsystemmajrelease ? {
-        '10'                    => "CSWjdk${version}",
-        '11'                    => "jdk-${version}",
-        '5'                     => "jdk-${version}",
+      /(?i:Solaris)/ => $::operatingsystemmajrelease ? {
+        '10' => "CSWjdk${version}",
+        '11' => "jdk-${version}",
+        '5'  => "jdk-${version}",
       },
-      default                   => "java-1.${version}.0-openjdk-devel",
+      default => "java-1.${version}.0-openjdk-devel",
     },
     default => $package_jdk,
   }
 
   ### Managed resources
   package { 'java':
-    ensure => $java::manage_package,
-    name   => $java::real_package,
+    ensure => $manage_package,
+    name   => $real_package,
   }
 
-  if $java::bool_jdk == true {
+  if $bool_jdk == true {
     package { 'java-jdk':
-      ensure => $java::manage_package,
-      name   => $java::real_package_jdk,
+      ensure => $manage_package,
+      name   => $real_package_jdk,
     }
   }
 
   ### Debugging, if enabled ( debug => true )
-  if $java::bool_debug == true {
+  if $bool_debug == true {
     file { 'debug_java':
-      ensure  => $java::manage_file,
+      ensure  => $manage_file,
       path    => "${settings::vardir}/debug-java",
       mode    => '0640',
       owner   => 'root',
@@ -96,5 +98,4 @@ class java (
   if $java::my_class {
     include $java::my_class
   }
-
 }

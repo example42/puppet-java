@@ -64,7 +64,7 @@ define java::install (
         default => '',
       }
       $real_package = $package ? {
-        undef       => $bool_jdk ? {
+        '' => $bool_jdk ? {
           false                                                 => $::operatingsystem ? {
             /(?i:RedHat|Centos|Fedora|Scientific|Amazon|Linux)/ => "java-1.${version}.0-openjdk",
             /(?i:Ubuntu|Debian|Mint)/                           => "openjdk-${version}-jre${headless_suffix}",
@@ -73,7 +73,7 @@ define java::install (
             /(?i:Solaris)/                                      => $::operatingsystemmajrelease ? {
               '10'                                              => "CSWjre${version}",
               '11'                                              => "jre-${version}",
-              '5'                                               => undef,
+              '5'                                               => '',
             },
             default                   => fail("OperatingSystem ${::operatingsystem} not supported"),
           },

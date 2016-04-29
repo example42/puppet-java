@@ -13,48 +13,63 @@ require 'spec_helper'
      it { should compile.with_all_deps }
    end
 
- describe 'variable type and content validations' do
-   let(:validation_params) do
+
+  describe 'variable type and content validations' do
+    # set needed custom facts and variables
+    let(:facts) do
+      {
+        :operatingsystem        => 'Ubuntu',
+        :operatingsystemrelease => '14.04',
+      }
+    end
+    let(:mandatory_params) do
       {
         #:param => 'value',
       }
-   end
+    end
 
-   validations = {
-     'absolute_path' => {
-       :name    => ['java_home_base'],
-       :valid   => ['/usr/lib/jvm'],
-       :invalid => ['invalid',3,2.42,['array'],a={'ha'=>'sh'}],
-       :message => 'is not an absolute path',
-     },
-     'version'        => {
-       :name    => ['version'] ,
-       :valid   => ['6'],
-       :invalid => [['array'],a={'ha'=>'sh'}, true],
-       :message => 'is not a string',
-    },
-  }
+    validations = {
+      'absolute_path' => {
+        :name    => %w(java_home_base),
+        :valid   => ['/absolute/filepath', '/absolute/directory/', %w(/array /with_paths)],
+        :invalid => ['../invalid', 3, 2.42, %w(array), { 'ha' => 'sh' }, true, false, nil],
+        :message => 'is not an absolute path',
+      },
+      'string' => {
+        :name    => %w(package package_jdk version),
+        :valid   => ['string'],
+        :invalid => [%w(array), { 'ha' => 'sh' }, 3, 2.42, true, false],
+        :params  => { :jdk => true },
+        :message => 'is not a string',
+      },
+      'bool_stringified' => {
+        :name    => %w(jdk headless absent debug),
+        #:valid   => [true, false, 'true', 'false'],
+        :valid   => [true, false],
+        :invalid => ['invalid', %w(array), { 'ha' => 'sh' }, 3, 2.42, nil],
+        :message => '(Unknown type of boolean|str2bool\(\): Requires either string to work with)',
+      },
+    }
 
-  validations.sort.each do |type, var|
-    var[:name].each do |var_name|
-      var[:valid].each do |valid|
-        context "with #{var_name} (#{type}) set to valid #{valid} (as #{valid.class})" do
-          let(:params) { validation_params.merge({ :"#{var_name}" => valid, }) }
-          it { should compile }
-         end
-       end
+    validations.sort.each do |type, var|
+      var[:name].each do |var_name|
+        var[:params] = {} if var[:params].nil?
+        var[:valid].each do |valid|
+          context "when #{var_name} (#{type}) is set to valid #{valid} (as #{valid.class})" do
+            let(:params) { [mandatory_params, var[:params], { :"#{var_name}" => valid, }].reduce(:merge) }
+            it { should compile }
+          end
+        end
 
-       var[:invalid].each do |invalid|
-         context "with #{var_name} (#{type}) set to invalid #{invalid} (as #{invalid.class})" do
-          let(:params) { validation_params.merge({ :"#{var_name}" => invalid, }) }
+        var[:invalid].each do |invalid|
+          context "when #{var_name} (#{type}) is set to invalid #{invalid} (as #{invalid.class})" do
+            let(:params) { [mandatory_params, var[:params], { :"#{var_name}" => invalid, }].reduce(:merge) }
             it 'should fail' do
-              expect do
-                should contain_class(subject)
-              end.to raise_error(Puppet::Error, /#{var[:message]}/)
+              expect { should contain_class(subject) }.to raise_error(Puppet::Error, /#{var[:message]}/)
             end
           end
         end
       end # var[:name].each
     end # validations.sort.each
-  end # describe
+  end # describe 'variable type and content validations'
 end
