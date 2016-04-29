@@ -16,12 +16,12 @@
 #   Installation method ('package' or 'source'). Default 'package'.
 #
 # [*install_source*]
-#   Source URL (when install='source'). Not default.
+#   Source URL (when install='source'). Default: ''
 #
 # [*package*]
 #   Name of the package to install (when install='package'). If not default it's
 #   automatically defined for the operatingsystem
-#   Default: undef
+#   Default: ''
 #
 # [*package_source*]
 #   Source from where to retrieve the defined package. Use a url.
@@ -44,8 +44,8 @@ define java::install (
   $version                 = '7',
   $headless                = true,
   $install                 = 'package',
-  $install_source          = undef,
-  $package                 = undef,
+  $install_source          = '',
+  $package                 = '',
   $package_source          = undef,
   $package_responsefile    = undef,
   $package_provider        = undef,
