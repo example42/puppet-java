@@ -1,6 +1,6 @@
 {
   "name": "example42-java",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "summary": "Puppet module to manage Java",
   "license": "Apache-2.0",
   "author": "Alessandro Franceschi, Martin Alfke",
