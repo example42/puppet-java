@@ -32,16 +32,9 @@ class java::params {
     default                   => '/usr/lib/jvm',
   }
 
-
-  # Real package names are computed in java class
-  $package = ''
-  $package_jdk = ''
-
   # General Settings
-  $my_class = ''
   $absent = false
   $puppi = false
   $puppi_helper = 'standard'
   $debug = false
-
 }

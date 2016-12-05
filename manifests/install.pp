@@ -16,7 +16,7 @@
 #   Installation method ('package' or 'source'). Default 'package'.
 #
 # [*install_source*]
-#   Source URL (when install='source'). Not default.
+#   Source URL (when install='source'). Default: ''
 #
 # [*package*]
 #   Name of the package to install (when install='package'). If not default it's
@@ -58,14 +58,13 @@ define java::install (
 
   case $install {
 
-    package: {
-
+    'package': {
       $headless_suffix = $bool_headless ? {
         true    => '-headless',
         default => '',
       }
       $real_package = $package ? {
-        ''                                                      => $bool_jdk ? {
+        '' => $bool_jdk ? {
           false                                                 => $::operatingsystem ? {
             /(?i:RedHat|Centos|Fedora|Scientific|Amazon|Linux)/ => "java-1.${version}.0-openjdk",
             /(?i:Ubuntu|Debian|Mint)/                           => "openjdk-${version}-jre${headless_suffix}",
@@ -74,11 +73,11 @@ define java::install (
             /(?i:Solaris)/                                      => $::operatingsystemmajrelease ? {
               '10'                                              => "CSWjre${version}",
               '11'                                              => "jre-${version}",
-              '5'                                               => undef,
+              '5'                                               => '',
             },
             default                   => fail("OperatingSystem ${::operatingsystem} not supported"),
           },
-          true                                                  => $::operatingsystem ? {
+          true      => $::operatingsystem ? {
             /(?i:RedHat|Centos|Fedora|Scientific|Amazon|Linux)/ => "java-1.${version}.0-openjdk-devel",
             /(?i:Ubuntu|Debian|Mint)/                           => "openjdk-${version}-jdk",
             /(?i:SLES)/                                         => "java-1_${version}_0-ibm",
@@ -86,9 +85,9 @@ define java::install (
             /(?i:Solaris)/                                      => $::operatingsystemmajrelease ? {
               '10'                                              => "CSWjdk${version}",
               '11'                                              => "jdk-${version}",
-              '5'                                               => "jdk",
+              '5'                                               => 'jdk',
             },
-            default                   => fail("OperatingSystem ${::operatingsystem} not supported"),
+            default => fail("OperatingSystem ${::operatingsystem} not supported"),
           }
         },
         default => $package,
@@ -105,10 +104,8 @@ define java::install (
         responsefile => $package_responsefile,
         provider     => $package_provider,
       }
-
     }
-
-    source: {
+    'source': {
       if (!$install_source) {
         fail('Required arguement: install_source')
       }
@@ -130,10 +127,9 @@ define java::install (
         target  => $created_dir,
         require => Puppi::Netinstall["netinstall_java_${name}"],
       }
-
     }
-
-    default: { }
-
+    default: {
+      fail("java::install::${name}::install is <${install}> and must be 'package' or 'source'.")
+    }
   }
 }

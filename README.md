@@ -14,13 +14,24 @@ Still, Pull Requests that fix bugs or introduce backwards compatible features wi
 ####Table of Contents
 
 1. [Overview](#overview)
-2. [Setup](#setup)
-3. [Usage](#usage)
+1. [Compatibility](#compatibility)
+1. [Setup](#setup)
+1. [Usage](#usage)
 
 
 ##Overview
 
 This module installs java (JDK + JRE) versions
+
+##Compatibility
+Puppet v3 (with and without the future parser) and Puppet v4 with Ruby versions
+1.8.7, 1.9.3, 2.0.0 and 2.1.0 where supported by Puppet.
+
+* Debian 6
+* EL 6
+* Solaris 10
+* Solaris 11
+* Ubuntu 14.04
 
 ##Setup
 
@@ -32,10 +43,12 @@ This module installs java (JDK + JRE) versions
 
 The main class is used only.
 
-        class { 'java':
-          jdk     => false, # default - whether to install the jdk or the jre only
-          version => '6', # Java version to install
-        }
+```puppet
+class { 'java':
+  jdk     => false, # default - whether to install the jdk or the jre only
+  version => '6', # Java version to install
+}
+```
 
 ##Development
 
